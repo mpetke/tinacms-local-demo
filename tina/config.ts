@@ -10,9 +10,7 @@ import {
   UsernamePasswordAuthJSProvider,
 } from "tinacms-authjs/dist/tinacms";
 
-const isLocal =
-  process.env.TINA_PUBLIC_IS_LOCAL === "true" ||
-  process.argv.includes("--local");
+const isLocal = process.env.FORCE_DEV === "true";
 
 const contentApiUrl =
   process.env.TINA_PUBLIC_CONTENT_API_URL ||
@@ -20,7 +18,7 @@ const contentApiUrl =
 
 if (!contentApiUrl) {
   throw new Error(
-    "Missing TINA_PUBLIC_CONTENT_API_URL in production environment"
+    "Missing TINA_PUBLIC_CONTENT_API_URL"
   );
 }
 

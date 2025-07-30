@@ -13,7 +13,7 @@ sleep 5
 
 # Start Next.js server
 echo "🚀 Starting Next.js"
-yarn next start
+yarn next dev
 
 # (Optional: cleanup)
 kill $TINA_PID
