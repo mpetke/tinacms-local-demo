@@ -11,12 +11,18 @@ import {
 } from "tinacms-authjs/dist/tinacms";
 
 const isLocal =
-  process.env.TINA_PUBLIC_IS_LOCAL === 'true' ||
-  process.argv.includes('--local');
+  process.env.TINA_PUBLIC_IS_LOCAL === "true" ||
+  process.argv.includes("--local");
 
-// @ts-ignore
+const contentApiUrl = !isLocal
+  ? process.env.TINA_PUBLIC_CONTENT_API_URL
+  : "http://localhost:4001/graphql"; // 👈 fallback if env var fails
+
+console.log("🔧 TINA contentApiUrlOverride:", contentApiUrl);
+console.log("🔧 TINA isLocal:", isLocal);
+
 const config = defineConfig({
-  contentApiUrlOverride: process.env.TINA_PUBLIC_CONTENT_API_URL || undefined,
+  contentApiUrlOverride: contentApiUrl,
   authProvider: isLocal
     ? new LocalAuthProvider()
     : new UsernamePasswordAuthJSProvider(),
@@ -34,7 +40,11 @@ const config = defineConfig({
   schema: {
     collections: [
       TinaUserCollection,
-      Page, Post, Author, Tag, Global,
+      Page,
+      Post,
+      Author,
+      Tag,
+      Global,
     ],
   },
 });
