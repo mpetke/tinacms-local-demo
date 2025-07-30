@@ -14,12 +14,15 @@ const isLocal =
   process.env.TINA_PUBLIC_IS_LOCAL === "true" ||
   process.argv.includes("--local");
 
-const contentApiUrl = !isLocal
-  ? process.env.TINA_PUBLIC_CONTENT_API_URL
-  : "http://localhost:4001/graphql"; // 👈 fallback if env var fails
+const contentApiUrl =
+  process.env.TINA_PUBLIC_CONTENT_API_URL ||
+  (isLocal ? "http://localhost:4001/graphql" : undefined);
 
-console.log("🔧 TINA contentApiUrlOverride:", contentApiUrl);
-console.log("🔧 TINA isLocal:", isLocal);
+if (!contentApiUrl) {
+  throw new Error(
+    "Missing TINA_PUBLIC_CONTENT_API_URL in production environment"
+  );
+}
 
 const config = defineConfig({
   contentApiUrlOverride: contentApiUrl,
@@ -34,7 +37,7 @@ const config = defineConfig({
     tina: {
       mediaRoot: "uploads",
       publicFolder: "public",
-      static: false,
+      static: false, // because uploads go into public
     },
   },
   schema: {
