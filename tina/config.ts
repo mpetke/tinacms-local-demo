@@ -10,13 +10,11 @@ import { LocalAuthProvider, defineConfig } from "tinacms";
 const isLocal = process.env.FORCE_DEV === "true";
 const useLocalAuth = process.env.USE_LOCAL_AUTH === "false";
 
-const contentApiUrl =
-  process.env.TINA_PUBLIC_CONTENT_API_URL ||
-  (isLocal ? "http://localhost:4001/graphql" : undefined);
-
-if (!contentApiUrl) {
+if (!process.env.TINA_PUBLIC_CONTENT_API_URL) {
   throw new Error("Missing TINA_PUBLIC_CONTENT_API_URL");
 }
+
+const contentApiUrl = process.env.TINA_PUBLIC_CONTENT_API_URL;
 
 const config = defineConfig({
   contentApiUrlOverride: contentApiUrl,
