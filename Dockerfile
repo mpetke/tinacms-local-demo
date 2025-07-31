@@ -12,20 +12,17 @@ RUN apk add --no-cache \
   socat
 
 ENV TINA_PUBLIC_IS_LOCAL=true
-ENV TINA_PUBLIC_CONTENT_API_URL=http://localhost:4001/graphql
-ENV FORCE_DEV=true
+ENV TINA_PUBLIC_CONTENT_API_URL=http://localhost:3000/api/tina/gql
 ENV NODE_OPTIONS=--max-old-space-size=4096
 
 WORKDIR /app
 
 COPY . .
 
-COPY scripts/build-with-tina.sh ./
-RUN chmod +x ./build-with-tina.sh
-RUN ./build-with-tina.sh
+RUN yarn install --frozen-lockfile
+RUN yarn tinacms build --local
 
 EXPOSE 3000
-EXPOSE 4001
 
 COPY scripts/entrypoint.sh ./
 RUN chmod +x ./entrypoint.sh

@@ -32,4 +32,4 @@ export default isLocal
       }),
       namespace: branch,
     })
-  : createLocalDatabase(); // fallback in non-local? Usually it's the other way.
+  : createLocalDatabase();
