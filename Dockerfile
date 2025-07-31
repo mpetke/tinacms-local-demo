@@ -1,5 +1,6 @@
-# ---- Base stage ----
-FROM node:24-alpine AS base
+# Since we can only run the project in dev mode, we create a massive container.
+# TODO: prod ready container with the minimal packages.
+FROM node:24-alpine
 
 RUN apk add --no-cache \
   python3 \
@@ -7,40 +8,25 @@ RUN apk add --no-cache \
   g++ \
   libc6-compat \
   bash \
-  curl
-
-WORKDIR /app
-
-COPY package.json yarn.lock* pnpm-lock.yaml* ./
-
-RUN yarn install --frozen-lockfile
-
-COPY . .
+  curl \
+  socat
 
 ENV TINA_PUBLIC_IS_LOCAL=true
 ENV TINA_PUBLIC_CONTENT_API_URL=http://localhost:4001/graphql
 ENV FORCE_DEV=true
 ENV NODE_OPTIONS=--max-old-space-size=4096
 
-COPY scripts/build-with-tina.sh ./
-RUN ./build-with-tina.sh
-
-# ---- Runtime stage ----
-FROM node:24-alpine AS runner
-
 WORKDIR /app
 
-RUN apk add --no-cache socat
+COPY . .
 
-COPY --from=base /app/ ./
-
-ENV FORCE_DEV=true
-ENV TINA_PUBLIC_IS_LOCAL=true
-ENV TINA_PUBLIC_CONTENT_API_URL=http://localhost:4001/graphql
+COPY scripts/build-with-tina.sh ./
+RUN chmod +x ./build-with-tina.sh
+RUN ./build-with-tina.sh
 
 EXPOSE 3000
 EXPOSE 4001
 
-COPY scripts/entrypoint.sh ./entrypoint.sh
+COPY scripts/entrypoint.sh ./
 RUN chmod +x ./entrypoint.sh
 CMD ["./entrypoint.sh"]

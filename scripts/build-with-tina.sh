@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+echo "🏗 Install node_modules"
+yarn install --frozen-lockfile
+
 echo "🏗 Building Tina admin dashboard..."
 TINA_PUBLIC_IS_LOCAL=true yarn tinacms build
 
