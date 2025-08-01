@@ -8,6 +8,8 @@ import {
   TinaUserCollection,
 } from "tinacms-authjs/dist/tinacms";
 import { LocalAuthProvider, defineConfig } from "tinacms";
+import { CustomMediaStore } from '@/lib/custom-media-store';
+
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 const contentApiUrl = process.env.TINA_PUBLIC_CONTENT_API_URL;
@@ -26,10 +28,8 @@ const config = defineConfig({
     publicFolder: "public",
   },
   media: {
-    tina: {
-      mediaRoot: "uploads",
-      publicFolder: "public",
-      static: false,
+    loadCustomStore: async () => {
+      return CustomMediaStore;
     },
   },
   schema: {

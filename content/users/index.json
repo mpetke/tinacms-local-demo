@@ -1,13 +1,13 @@
 {
-    "users": [
-      {
-        "name": "Tina Admin",
-        "email": "admin@example.com",
-        "username": "admin",
-        "password": {
-          "value": "changeit",
-          "passwordChangeRequired": true
-        }
+  "users": [
+    {
+      "name": "Tina Admin",
+      "email": "admin@example.com",
+      "username": "admin",
+      "password": {
+        "value": "changeit",
+        "passwordChangeRequired": true
       }
-    ]
-  }
+    }
+  ]
+}
