@@ -1,7 +1,7 @@
 import Post from "./collection/post";
 import Global from "./collection/global";
 import Author from "./collection/author";
-import Page from "./collection/page";
+import PageCollection from "./collection/page";
 import Tag from "./collection/tag";
 import {
   UsernamePasswordAuthJSProvider,
@@ -35,7 +35,7 @@ const config = defineConfig({
   schema: {
     collections: [
       TinaUserCollection,
-      Page,
+      PageCollection,
       Post,
       Author,
       Tag,

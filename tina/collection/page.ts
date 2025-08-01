@@ -8,7 +8,7 @@ import { calloutBlockSchema } from '@/components/blocks/callout';
 import { statsBlockSchema } from '@/components/blocks/stats';
 import { ctaBlockSchema } from '@/components/blocks/call-to-action';
 
-const Page: Collection = {
+const PageCollection: Collection = {
   label: 'Pages',
   name: 'page',
   path: 'content/pages',
@@ -45,4 +45,4 @@ const Page: Collection = {
   ],
 };
 
-export default Page;
+export default PageCollection;

@@ -20,7 +20,6 @@ WORKDIR /app
 COPY . .
 
 RUN yarn install --frozen-lockfile
-RUN yarn tinacms build --local
 
 EXPOSE 3000
 
