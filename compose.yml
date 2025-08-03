@@ -1,15 +1,7 @@
 services:
-  backend:
+  tinacms:
     build:
       context: .
-    ports:
-      - "3000:3000"
-      - "4001:4001"
     env_file:
       - .env
-    restart: unless-stopped
-    volumes:
-      - tinacms-public:/app/public
-
-volumes:
-  tinacms-public:
+    image: ${DOCKER_IMAGE_NAME}

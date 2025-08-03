@@ -1,0 +1,34 @@
+services:
+  tinacms:
+    image: node:24-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    environment:
+      NODE_OPTIONS: "--max-old-space-size=4096"
+    command: sh -c "apk add --no-cache python3 make g++ libc6-compat bash curl socat && echo 'Ready.' && tail -f /dev/null"
+    ports:
+      - "3000:3000"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  mongodb:
+    image: mongo:6
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - ./scripts/init-replica.js:/docker-entrypoint-initdb.d/init-replica.js:ro
+      - tina-db:/data/db
+    hostname: "mongodb"
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  tina-db:

@@ -8,18 +8,13 @@ RUN apk add --no-cache \
   g++ \
   libc6-compat \
   bash \
-  curl \
-  socat
-
-ENV TINA_PUBLIC_IS_LOCAL=true
-ENV TINA_PUBLIC_CONTENT_API_URL=http://localhost:3000/api/tina/gql
-ENV NODE_OPTIONS=--max-old-space-size=4096
+  curl
 
 WORKDIR /app
 
 COPY . .
 
-RUN yarn install --frozen-lockfile
+RUN scripts/build.sh
 
 EXPOSE 3000
 

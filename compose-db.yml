@@ -1,11 +1,11 @@
 services:
-  db:
-    image: mongo:4.4
+  db-for-build:
+    image: mongo:6
     restart: unless-stopped
-    volumes:
-      - tina-db:/data/db
     ports:
       - "27017:27017"
-
-volumes:
-  tina-db:
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

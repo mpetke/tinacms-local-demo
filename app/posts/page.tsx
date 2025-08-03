@@ -2,7 +2,7 @@ import Layout from '@/components/layout/layout';
 import client from '@/tina/__generated__/client';
 import PostsClientPage from './client-page';
 
-export const revalidate = 300;
+export const revalidate = 30;
 
 export default async function PostsPage() {
   let posts = await client.queries.postConnection({

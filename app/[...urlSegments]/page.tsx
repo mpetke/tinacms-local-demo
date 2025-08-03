@@ -5,7 +5,7 @@ import Layout from '@/components/layout/layout';
 import { Section } from '@/components/layout/section';
 import ClientPage from './client-page';
 
-export const revalidate = 300;
+export const revalidate = 30;
 
 export default async function Page({
   params,
@@ -14,11 +14,6 @@ export default async function Page({
 }) {
   const resolvedParams = await params;
   const filepath = resolvedParams.urlSegments.join('/');
-
-  // ⛔ Filter out disallowed paths
-  if (filepath.startsWith('.well-known') || filepath.endsWith('.json')) {
-    notFound();
-  }
 
   let data;
   try {
@@ -63,14 +58,7 @@ export async function generateStaticParams() {
       urlSegments: edge?.node?._sys.breadcrumbs || [],
     }))
     .filter((x) => x.urlSegments.length >= 1)
-    .filter((x) => {
-      const path = x.urlSegments.join('/');
-      return (
-        !x.urlSegments.every((x) => x === 'home') &&
-        !path.startsWith('.well-known') &&
-        !path.endsWith('.json')
-      );
-    });
+    .filter((x) => !x.urlSegments.every((x) => x === 'home')); // exclude the home page
 
   return params;
 }
